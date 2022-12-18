@@ -23,8 +23,11 @@ export const search = async (req: ISearchRequest) => {
   const url = `https://nyaa.si/?page=rss&q=${req.title}+${req.group}+${req.quality}`;
   console.log('search', 'url', url);
   const response = await fetch(url);
+
+  if (!response.ok) throw Error(await response.text());
+
   const xml = await response.text();
   const json = parser.parse(xml);
   console.log('search', 'json', json);
-  return json.rss.channel.item as Torrent[];
+  return (json.rss.channel.item ?? []) as Torrent[];
 };
