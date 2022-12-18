@@ -19,6 +19,7 @@ export interface ISearchRequest {
   group: string;
   quality: string;
 }
+
 export const search = async (req: ISearchRequest) => {
   const url = `https://nyaa.si/?page=rss&q=${req.title}+${req.group}+${req.quality}`;
   console.log('search', 'url', url);

@@ -2,10 +2,20 @@ import { getTransmissionOptions } from 'services/options';
 
 let sessionId: string | undefined;
 
+export interface ITransmissionResponse {
+  arguments: {
+    'torrent-duplicate'?: {
+      hashString: string;
+      id: number;
+      name: string;
+    };
+  };
+  result: 'success' | string;
+}
 export const addTorrent = async (
   url: string,
   path: string,
-): Promise<Response> => {
+): Promise<ITransmissionResponse> => {
   const config = await getTransmissionOptions();
   return fetch(`http://${config.host}:${config.port}/transmission/rpc`, {
     method: 'POST',
@@ -26,12 +36,16 @@ export const addTorrent = async (
         filename: url,
       },
     }),
-  }).then((res) => {
+  }).then(async (res) => {
     if (res.status === 409) {
       console.log('Setting transmission session id', res);
       sessionId = res.headers.get('x-transmission-session-id') ?? undefined;
       return addTorrent(url, path);
     }
-    return res;
+    if (!res.ok) {
+      throw Error(await res.text());
+    }
+
+    return (await res.json()) as Promise<ITransmissionResponse>;
   });
 };

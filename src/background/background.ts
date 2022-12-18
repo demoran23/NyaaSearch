@@ -34,11 +34,7 @@ const onAddTorrent = (
   console.log('background.ts', 'add-torrent');
 
   addTorrent(msg.data.url, msg.data.path)
-    .then(async (res) => {
-      const text = await res.text();
-      console.log('addTorrent', { msg, res, text });
-      sendResponse(text);
-    })
+    .then(sendResponse)
     .catch(console.error);
 
   return true;
