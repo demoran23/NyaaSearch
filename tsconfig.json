@@ -8,9 +8,11 @@
     "esModuleInterop": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "types": ["vite/client"],
+    "types": ["vite/client", "chrome"],
+    "skipLibCheck": true,
     "noEmit": true,
     "isolatedModules": true,
-    "baseUrl": "src"
+    "baseUrl": "src",
+    "resolveJsonModule": true
   }
 }
