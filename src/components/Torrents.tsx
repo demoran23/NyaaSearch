@@ -1,7 +1,6 @@
-import { TextField } from '@suid/material';
-import { OptionsPage } from 'components/OptionsPage';
+import { List, ListItemText, TextField } from '@suid/material';
 import { extensionId } from 'index';
-import { getTransmissionOptions, ITransmissionOptions } from 'services/options';
+import { ITransmissionOptions } from 'services/options';
 import {
   Component,
   createEffect,
@@ -15,6 +14,8 @@ import { setTorrents, torrents } from 'store/torrents';
 
 export interface TorrentsProps {
   title: string;
+  group: string;
+  quality: string;
 }
 
 export const Torrents: Component<TorrentsProps> = (props) => {
@@ -29,16 +30,18 @@ export const Torrents: Component<TorrentsProps> = (props) => {
   );
   createEffect(() => {
     if (options.state === 'ready' && options()?.baseDir) {
-      console.log('options', options());
       setBaseDir((_) => options()!.baseDir!);
     }
+  });
+  createEffect(() => {
+    setSubDir((_) => props.title);
   });
   createEffect(() => {
     chrome.runtime.sendMessage(
       extensionId,
       {
         type: 'search',
-        data: props.title,
+        data: props,
       },
       setTorrents,
     );
@@ -61,31 +64,38 @@ export const Torrents: Component<TorrentsProps> = (props) => {
           value={getSubDir()}
           onChange={(e, value) => setSubDir((_) => value)}
         />
-        <For each={torrents}>
-          {(item, index) => (
-            <div
-              data-index={index()}
-              onClick={async () => {
-                console.log('adding torrent');
-                chrome.runtime.sendMessage(
-                  extensionId,
-                  {
-                    type: 'add-torrent',
-                    data: {
-                      url: item.link,
-                      path: `${getBaseDir()}/${getSubDir()}`,
-                    },
-                  },
-                  (res) => {
-                    console.log(res);
-                  },
-                );
-              }}
-            >
-              {item.title}
-            </div>
-          )}
-        </For>
+        <Switch
+          fallback={<span>Set your base dir and sub dir to see torrents</span>}
+        >
+          <Match when={getBaseDir() && getSubDir()} keyed={true}>
+            <List>
+              <For each={torrents}>
+                {(item, index) => (
+                  <ListItemText
+                    data-index={index()}
+                    onClick={async () => {
+                      chrome.runtime.sendMessage(
+                        extensionId,
+                        {
+                          type: 'add-torrent',
+                          data: {
+                            url: item.link,
+                            path: `${getBaseDir()}/${getSubDir()}`,
+                          },
+                        },
+                        (res) => {
+                          console.log(res);
+                        },
+                      );
+                    }}
+                  >
+                    {item.title}
+                  </ListItemText>
+                )}
+              </For>
+            </List>
+          </Match>
+        </Switch>
       </Match>
     </Switch>
   );

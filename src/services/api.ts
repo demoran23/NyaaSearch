@@ -14,20 +14,17 @@ export interface Torrent {
   pubDate: 'Sun, 04 Dec 2022 13:20:07 GMT';
 }
 
-export const search = async (value: string) => {
-  console.log("search", "start")
-  const response = await getXmlSearchRepsonse(value);
+export interface ISearchRequest {
+  title: string;
+  group: string;
+  quality: string;
+}
+export const search = async (req: ISearchRequest) => {
+  const url = `https://nyaa.si/?page=rss&q=${req.title}+${req.group}+${req.quality}`;
+  console.log('search', 'url', url);
+  const response = await fetch(url);
   const xml = await response.text();
   const json = parser.parse(xml);
-  console.log("search", json);
+  console.log('search', 'json', json);
   return json.rss.channel.item as Torrent[];
 };
-
-const getXmlSearchRepsonse = async (value: string) => {
-  // const url = `https://www.tokyotosho.info/rss.php?terms=${value}+subsplease+1080&type=1&searchName=true`;
-  const url = `https://nyaa.si/?page=rss&q=${value}+subsplease+1080`;
-  const response = await fetch(url);
-  return response;
-};
-
-// https://nyaa.si/?f=0&c=1_2&q=maid+subsplease+1080
