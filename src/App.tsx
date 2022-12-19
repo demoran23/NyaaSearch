@@ -5,8 +5,12 @@ import type { Component } from 'solid-js';
 
 import styles from './App.module.css';
 
-const App: Component = () => {
-  const [getTitle, setTitle] = createSignal('');
+export interface AppProps {
+  title?: string | null;
+}
+
+const App: Component<AppProps> = (props) => {
+  const [getTitle, setTitle] = createSignal(props.title ?? '');
   const [getGroup, setGroup] = createSignal('SubsPlease');
   const [getQuality, setQuality] = createSignal('1080');
   return (

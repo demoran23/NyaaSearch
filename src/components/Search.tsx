@@ -5,7 +5,11 @@ export interface SearchProps {
   title: string;
 }
 export const Search: Component<SearchProps> = (props) => {
-  const onClick = () => console.log(props.title);
+  const onClick = async () => {
+    console.log(props.title);
+
+    await chrome.runtime.sendMessage({ type: 'show-app', data: props });
+  };
   return (
     <IconButton onClick={onClick}>
       <SearchIcon />

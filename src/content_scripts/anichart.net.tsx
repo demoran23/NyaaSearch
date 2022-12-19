@@ -5,7 +5,8 @@ const renderCards = () => {
   const cards = [...document.querySelectorAll('.media-card')];
 
   for (const card of cards) {
-    const title = card.querySelector('.overlay .title')?.innerHTML;
+    const title = (card.querySelector('.overlay .title') as HTMLDivElement)
+      ?.innerText;
     if (!title) continue;
 
     const footer = card.querySelector('.data .footer');
@@ -18,6 +19,15 @@ const renderCards = () => {
   }
 };
 
+// Allow enough time for the page to render its contents before attempting to manipulate it
 setTimeout(renderCards, 500);
 
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  if (msg.type === 'refresh') {
+    setTimeout(renderCards, 200);
+    sendResponse('Refreshing!');
+  }
+
+  return true;
+});
 export {};

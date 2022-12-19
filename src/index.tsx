@@ -4,4 +4,9 @@ import { render } from 'solid-js/web';
 import './index.css';
 import App from './App';
 export const extensionId = 'cjeohjhhkdmecfpcpidfjmgipmfifnce';
-render(() => <App />, document.getElementById('root') as HTMLElement);
+render(
+  () => (
+    <App title={new URLSearchParams(window.location.search).get('title')} />
+  ),
+  document.getElementById('root') as HTMLElement,
+);
