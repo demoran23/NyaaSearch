@@ -18,6 +18,19 @@ export default defineManifest(async (env) => ({
     service_worker: 'src/background/background',
     type: 'module',
   },
+  content_scripts: [
+    {
+      matches: [
+        '*://anichart.net/Spring-*',
+        '*://anichart.net/Summer-*',
+        '*://anichart.net/Fall-*',
+        '*://anichart.net/Winter-*',
+      ],
+      js: ['src/content_scripts/anichart.net.tsx'],
+      run_at: 'document_end',
+      all_frames: false,
+    },
+  ],
   description: 'Adds torrent search to AniChart',
   host_permissions: [
     'https://*/',
@@ -26,8 +39,8 @@ export default defineManifest(async (env) => ({
     'http://nautilus:9091/*',
     'http://127.0.0.1:3000/',
   ],
-  permissions: ['tabs', 'storage', "activeTab"],
-  options_page: "options_page.html",
+  permissions: ['tabs', 'storage', 'activeTab'],
+  options_page: 'options_page.html',
   externally_connectable: {
     matches: [
       'https://*/',
@@ -38,7 +51,7 @@ export default defineManifest(async (env) => ({
       'http://127.0.0.1/*',
       'http://nautilus/*',
       'http://nautilus:9091/*',
-      '*://google.com/*'
+      '*://google.com/*',
     ],
   },
   manifest_version: 3,
