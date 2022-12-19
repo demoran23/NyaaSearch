@@ -21,6 +21,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   // If the url changes, instruct to refresh
   if (!tab.active) return;
 
+  console.log('onUpdated', changeInfo, tab);
   if (changeInfo.url) {
     const response = await chrome.tabs.sendMessage(tabId, { type: 'refresh' });
     console.log('got response', response);

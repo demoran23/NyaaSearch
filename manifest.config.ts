@@ -29,6 +29,11 @@ export default defineManifest(async (env) => ({
       js: ['src/content_scripts/anichart.net'],
       all_frames: false,
     },
+    {
+      matches: ['*://anilist.co/anime/*'],
+      js: ['src/content_scripts/anilist.co/anime'],
+      all_frames: false,
+    },
   ],
   description: 'Adds torrent search to AniChart',
   host_permissions: [

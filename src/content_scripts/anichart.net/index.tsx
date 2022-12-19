@@ -1,12 +1,8 @@
 import { Search } from 'components/Search';
 import { render } from 'solid-js/web';
 
-const renderCards = () => {
+const addSearchButtons = () => {
   const cards = [...document.querySelectorAll('.media-card')];
-
-  if (cards.length > 0) {
-    console.log('Adding torrent search buttons');
-  }
 
   for (const card of cards) {
     const title = (card.querySelector('.overlay .title') as HTMLDivElement)
@@ -16,19 +12,24 @@ const renderCards = () => {
     const footer = card.querySelector('.data .footer');
     if (!footer) continue;
 
+    // If we've already got a button, move on
+    if (footer.querySelector('.torrent-search-button')) continue;
+
     const mountPoint = document.createElement('div');
+    mountPoint.className = 'torrent-search-button';
     footer.appendChild(mountPoint);
 
+    console.log('Adding search button to', title);
     render(() => <Search title={title} />, mountPoint);
   }
 };
 
-// Allow enough time for the page to render its contents before attempting to manipulate it
-setTimeout(renderCards, 500);
+// The page conditionally renders the cards, so keep a watch on it
+setInterval(addSearchButtons, 500);
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === 'refresh') {
-    setTimeout(renderCards, 200);
+    setTimeout(addSearchButtons, 200);
     sendResponse('Refreshing!');
   }
 
