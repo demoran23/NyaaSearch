@@ -15,7 +15,7 @@ export default defineManifest(async (env) => ({
     default_popup: 'index.html',
   },
   background: {
-    service_worker: 'src/background/background',
+    service_worker: 'src/background',
     type: 'module',
   },
   content_scripts: [
@@ -26,8 +26,7 @@ export default defineManifest(async (env) => ({
         '*://anichart.net/Fall-*',
         '*://anichart.net/Winter-*',
       ],
-      js: ['src/content_scripts/anichart.net.tsx'],
-      run_at: 'document_end',
+      js: ['src/content_scripts/anichart.net'],
       all_frames: false,
     },
   ],

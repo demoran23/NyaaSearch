@@ -4,6 +4,10 @@ import { render } from 'solid-js/web';
 const renderCards = () => {
   const cards = [...document.querySelectorAll('.media-card')];
 
+  if (cards.length > 0) {
+    console.log('Adding torrent search buttons');
+  }
+
   for (const card of cards) {
     const title = (card.querySelector('.overlay .title') as HTMLDivElement)
       ?.innerText;
