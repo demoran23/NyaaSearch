@@ -12,10 +12,17 @@ export interface ITransmissionResponse {
   };
   result: 'success' | string;
 }
-export const addTorrent = async (
-  url: string,
-  path: string,
-): Promise<ITransmissionResponse> => {
+
+export const addTorrent = (url: string, path: string) =>
+  api({
+    method: 'torrent-add',
+    arguments: {
+      'download-dir': path,
+      filename: url,
+    },
+  });
+
+export const api = async (req: any): Promise<ITransmissionResponse> => {
   const config = await getTransmissionOptions();
   return fetch(`http://${config.host}:${config.port}/transmission/rpc`, {
     method: 'POST',
@@ -29,19 +36,14 @@ export const addTorrent = async (
         config.username + (config.password ? ':' + config.password : ''),
       )}`,
     },
-    body: JSON.stringify({
-      method: 'torrent-add',
-      arguments: {
-        'download-dir': path,
-        filename: url,
-      },
-    }),
+    body: JSON.stringify(req),
   }).then(async (res) => {
     if (res.status === 409) {
       console.log('Setting transmission session id', res);
       sessionId = res.headers.get('x-transmission-session-id') ?? undefined;
-      return addTorrent(url, path);
+      return api(req);
     }
+
     if (!res.ok) {
       throw Error(await res.text());
     }
@@ -49,3 +51,11 @@ export const addTorrent = async (
     return (await res.json()) as Promise<ITransmissionResponse>;
   });
 };
+
+export const getAllTorrents = () =>
+  api({
+    arguments: {
+      fields: ['id', 'name', 'torrentFile', 'magnetLink'],
+    },
+    method: 'torrent-get',
+  });
