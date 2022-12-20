@@ -9,7 +9,10 @@ export const onSearch = (
   if (msg.type !== 'search') return false;
   console.log('background.ts', msg.type, msg);
 
-  search(msg.data).then(sendResponse).catch(console.error);
+  search(msg.data).then((response) => {
+    console.log(response);
+    sendResponse(response);
+  });
 
   return true;
 };

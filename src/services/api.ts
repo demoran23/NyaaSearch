@@ -4,14 +4,25 @@ const parser = new XMLParser();
 
 export interface Torrent {
   category: string;
-  title: string;
-  // torrent link
-  link: string;
-  // html
   description: string;
+  // torrent link
+  guid: string;
+  // html
+  link: string;
   // link to details page
-  guid: 'https://www.tokyotosho.info/details.php?id=1720777';
-  pubDate: 'Sun, 04 Dec 2022 13:20:07 GMT';
+  'nyaa:category': string;
+  // date
+  'nyaa:categoryId': string;
+  'nyaa:comments': number;
+  'nyaa:downloads': number;
+  'nyaa:infoHash': string;
+  'nyaa:leechers': number;
+  'nyaa:remake': 'No' | 'No';
+  'nyaa:seeders': number;
+  'nyaa:size': string;
+  'nyaa:trusted': 'Yes' | 'No';
+  pubDate: string;
+  title: string;
 }
 
 export interface ISearchRequest {

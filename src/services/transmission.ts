@@ -59,3 +59,12 @@ export const getAllTorrents = () =>
     },
     method: 'torrent-get',
   });
+
+export const getTorrentByInfoHash = (infoHash: string) =>
+  api({
+    arguments: {
+      fields: ['id', 'name', 'torrentFile', 'magnetLink'],
+      ids: [infoHash],
+    },
+    method: 'torrent-get',
+  });

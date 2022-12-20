@@ -3,7 +3,7 @@ import { render } from 'solid-js/web';
 
 import './index.css';
 import App from './App';
-export const extensionId = 'cjeohjhhkdmecfpcpidfjmgipmfifnce';
+export const extensionId = chrome.runtime.id;
 render(
   () => (
     <App title={new URLSearchParams(window.location.search).get('title')} />

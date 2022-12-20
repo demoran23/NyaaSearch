@@ -1,4 +1,4 @@
-import { Search } from 'components/Search';
+import { SearchButtons } from 'components/SearchButtons';
 import { render } from 'solid-js/web';
 
 const addSearchButtons = () => {
@@ -20,7 +20,7 @@ const addSearchButtons = () => {
     footer.appendChild(mountPoint);
 
     console.log('Adding search button to', title);
-    render(() => <Search title={title} />, mountPoint);
+    render(() => <SearchButtons title={title} />, mountPoint);
   }
 };
 

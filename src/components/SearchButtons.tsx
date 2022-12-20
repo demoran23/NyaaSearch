@@ -6,7 +6,7 @@ import { SvgIcon } from '@suid/material';
 export interface SearchProps {
   title: string;
 }
-export const Search: Component<SearchProps> = (props) => {
+export const SearchButtons: Component<SearchProps> = (props) => {
   const onClickSearch = async () => {
     await chrome.runtime.sendMessage({ type: 'show-app', data: props });
   };

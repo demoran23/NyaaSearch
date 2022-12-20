@@ -1,5 +1,5 @@
 import { TextField } from '@suid/material';
-import { Torrents } from 'components/Torrents';
+import { TorrentsList } from 'components/TorrentsList';
 import { createSignal, Show } from 'solid-js';
 import type { Component } from 'solid-js';
 
@@ -32,7 +32,7 @@ const App: Component<AppProps> = (props) => {
           onChange={(e, value) => setQuality((_) => value)}
         />
         {getTitle() && (
-          <Torrents
+          <TorrentsList
             title={getTitle()}
             group={getGroup()}
             quality={getQuality()}
