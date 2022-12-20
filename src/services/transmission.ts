@@ -9,6 +9,7 @@ export interface ITransmissionResponse {
       id: number;
       name: string;
     };
+    torrents?: unknown[];
   };
   result: 'success' | string;
 }
@@ -52,19 +53,13 @@ export const api = async (req: any): Promise<ITransmissionResponse> => {
   });
 };
 
-export const getAllTorrents = () =>
-  api({
-    arguments: {
-      fields: ['id', 'name', 'torrentFile', 'magnetLink'],
-    },
-    method: 'torrent-get',
-  });
-
-export const getTorrentByInfoHash = (infoHash: string) =>
-  api({
+export const getTorrentByInfoHash = async (infoHash: string) => {
+  const response = await api({
     arguments: {
       fields: ['id', 'name', 'torrentFile', 'magnetLink'],
       ids: [infoHash],
     },
     method: 'torrent-get',
   });
+  return (response.arguments.torrents ?? [])[0];
+};

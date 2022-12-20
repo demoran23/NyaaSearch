@@ -1,4 +1,5 @@
 import { Button, List, TextField } from '@suid/material';
+import { SearchResponse } from 'background/onSearch';
 import { TorrentCard } from 'components/TorrentCard';
 import { extensionId } from 'index';
 import { ISearchRequest, Torrent } from 'services/api';
@@ -19,18 +20,13 @@ import { Input } from '@suid/icons-material';
 export type TorrentsProps = ISearchRequest;
 
 export const TorrentsList: Component<TorrentsProps> = (props) => {
-  const [getDownloaded, setDownloaded] = createSignal<Record<string, boolean>>(
-    {},
-  );
   const [getBaseDir, setBaseDir] = createSignal<string>('');
   const [getSubDir, setSubDir] = createSignal<string>(props.title);
-  const [options, actions] = createResource<Partial<ITransmissionOptions>>(
-    () => {
-      return chrome.runtime.sendMessage(extensionId, {
-        type: 'get-transmission-options',
-      });
-    },
-  );
+  const [options] = createResource<Partial<ITransmissionOptions>>(() => {
+    return chrome.runtime.sendMessage(extensionId, {
+      type: 'get-transmission-options',
+    });
+  });
 
   // When we get an options default base dir, set our mutable basedir
   createEffect(() => {
@@ -52,7 +48,11 @@ export const TorrentsList: Component<TorrentsProps> = (props) => {
         type: 'search',
         data: props,
       },
-      setTorrents,
+      (res: SearchResponse) => {
+        console.log('SEARCH_RESPONSE', res);
+        setTorrents(res.torrents);
+        setDownloads(res.downloads);
+      },
     );
   });
 

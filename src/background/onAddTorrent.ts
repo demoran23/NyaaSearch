@@ -7,7 +7,6 @@ export const onAddTorrent = (
   sendResponse: (response?: any) => void,
 ) => {
   if (msg.type !== 'add-torrent') return false;
-  console.log('background.ts', 'add-torrent');
 
   addTorrent(msg.data.url, msg.data.path)
     .then(sendResponse)
