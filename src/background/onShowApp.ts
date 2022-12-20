@@ -1,10 +1,6 @@
 import { IMessage } from 'background/IMessage';
 
-export const onShowApp = async (
-  msg: IMessage,
-  sender: chrome.runtime.MessageSender,
-  sendResponse: (response?: any) => void,
-) => {
+export const onShowApp = async (msg: IMessage) => {
   if (msg.type !== 'show-app') return false;
   console.log('background.ts', msg.type);
 

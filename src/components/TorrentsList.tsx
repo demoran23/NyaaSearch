@@ -31,13 +31,14 @@ export const TorrentsList: Component<TorrentsProps> = (props) => {
   // When we get an options default base dir, set our mutable basedir
   createEffect(() => {
     if (options.state === 'ready' && options()?.baseDir) {
-      setBaseDir((_) => options()!.baseDir!);
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      setBaseDir(() => options()!.baseDir!);
     }
   });
 
   // When our title changes, update our subdir
   createEffect(() => {
-    setSubDir((_) => props.title);
+    setSubDir(() => props.title);
   });
 
   // Update our list when props change
@@ -72,20 +73,22 @@ export const TorrentsList: Component<TorrentsProps> = (props) => {
 
   return (
     <Switch>
-      <Match when={options.state === 'pending'} keyed={true}>
+      <Match when={options.state === 'pending'} keyed>
         Loading...
       </Match>
-      <Match when={options.state === 'errored'}>{options.error}</Match>
-      <Match when={options.state === 'ready'} keyed={true}>
+      <Match when={options.state === 'errored'} keyed>
+        {options.error}
+      </Match>
+      <Match when={options.state === 'ready'} keyed>
         <TextField
           label="Base dir"
           value={getBaseDir()}
-          onChange={(e, value) => setBaseDir((_) => value)}
+          onChange={(e, value) => setBaseDir(() => value)}
         />
         <TextField
           label="Sub dir"
           value={getSubDir()}
-          onChange={(e, value) => setSubDir((_) => value)}
+          onChange={(e, value) => setSubDir(() => value)}
         />
         <Switch
           fallback={<span>Set your base dir and sub dir to see torrents</span>}

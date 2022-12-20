@@ -1,6 +1,6 @@
 import { TextField } from '@suid/material';
 import { TorrentsList } from 'components/TorrentsList';
-import { createSignal, Show } from 'solid-js';
+import { createSignal } from 'solid-js';
 import type { Component } from 'solid-js';
 
 import styles from './App.module.css';
@@ -19,17 +19,17 @@ const App: Component<AppProps> = (props) => {
         <TextField
           label="Show title"
           value={getTitle()}
-          onChange={(e, value) => setTitle((_) => value)}
+          onChange={(e, value) => setTitle(() => value)}
         />
         <TextField
           label="Group"
           value={getGroup()}
-          onChange={(e, value) => setGroup((_) => value)}
+          onChange={(e, value) => setGroup(() => value)}
         />
         <TextField
           label="Quality"
           value={getQuality()}
-          onChange={(e, value) => setQuality((_) => value)}
+          onChange={(e, value) => setQuality(() => value)}
         />
         {getTitle() && (
           <TorrentsList

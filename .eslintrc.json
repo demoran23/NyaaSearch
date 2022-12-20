@@ -12,5 +12,8 @@
   },
   "env": {
     "browser": true
+  },
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }
