@@ -8,7 +8,7 @@ import {
   Typography,
   IconButton,
 } from '@suid/material';
-import { Torrent } from 'services/api';
+import { Torrent } from 'services/nyaa';
 import { Component, Match, Switch } from 'solid-js';
 import { downloads } from 'store/downloads';
 

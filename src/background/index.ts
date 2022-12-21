@@ -2,7 +2,7 @@ import { onAddTorrent } from 'background/onAddTorrent';
 import { onGetTransmissionOptions } from 'background/onGetTransmissionOptions';
 import { onSearch } from 'background/onSearch';
 import { onShowApp } from 'background/onShowApp';
-import { getTorrentByInfoHash } from 'services/transmission';
+import { getTorrentsByInfoHash } from 'services/transmission';
 
 for (const onMessage of [
   chrome.runtime.onMessageExternal,
@@ -33,7 +33,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 
 chrome.runtime.onInstalled.addListener(async () => {
   console.log('background.ts', 'onInstalled');
-  const res = await getTorrentByInfoHash(
+  const res = await getTorrentsByInfoHash(
     'f9261d860c983f9666712cd6392868cca17c4afc',
   );
   console.log('f9261d860c983f9666712cd6392868cca17c4afe', res);

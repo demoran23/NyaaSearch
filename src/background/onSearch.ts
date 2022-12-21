@@ -1,6 +1,6 @@
 import { IMessage } from 'background/IMessage';
-import { search, Torrent } from 'services/api';
-import { getTorrentByInfoHash } from 'services/transmission';
+import { search, Torrent } from 'services/nyaa';
+import { getTorrentsByInfoHash } from 'services/transmission';
 import { Downloads } from 'store/downloads';
 
 export interface SearchResponse {
@@ -16,14 +16,19 @@ export const onSearch = (
   if (msg.type !== 'search') return false;
 
   search(msg.data).then(async (torrents) => {
-    const downloads = await torrents.reduce(async (p, c) => {
-      const prev = await p;
-      const curr = await c;
-      const existing = await getTorrentByInfoHash(curr['nyaa:infoHash']);
-      return { ...prev, [curr.link]: !!existing };
-    }, Promise.resolve({} as Downloads));
+    const existing = await getTorrentsByInfoHash(
+      ...torrents.map((t) => t['nyaa:infoHash']),
+    );
+    const dl = torrents.reduce((prev, curr) => {
+      return {
+        ...prev,
+        [curr.link]: existing.some(
+          (t) => t.hashString === curr['nyaa:infoHash'],
+        ),
+      };
+    }, {} as Downloads);
 
-    const response: SearchResponse = { torrents, downloads };
+    const response: SearchResponse = { torrents, downloads: dl };
 
     sendResponse(response);
   });

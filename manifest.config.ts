@@ -35,11 +35,11 @@ export default defineManifest(async (env) => ({
       all_frames: false,
     },
   ],
-  description: 'Adds torrent search to AniChart',
+  description: 'Search nyaa.si',
   host_permissions: ['https://*/*', 'http://*/*'],
   permissions: ['tabs', 'storage'],
   options_page: 'options_page.html',
   manifest_version: 3,
-  name: 'AniChart Torrents',
+  name: 'Nyaa Search',
   version: '1.0',
 }));

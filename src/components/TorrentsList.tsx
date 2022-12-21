@@ -2,7 +2,7 @@ import { Button, List, TextField } from '@suid/material';
 import { SearchResponse } from 'background/onSearch';
 import { TorrentCard } from 'components/TorrentCard';
 import { extensionId } from 'index';
-import { ISearchRequest, Torrent } from 'services/api';
+import { ISearchRequest, Torrent } from 'services/nyaa';
 import { ITransmissionOptions } from 'services/options';
 import {
   Component,
@@ -51,8 +51,8 @@ export const TorrentsList: Component<TorrentsProps> = (props) => {
       },
       (res: SearchResponse) => {
         console.log('SEARCH_RESPONSE', res);
-        setTorrents(res.torrents);
-        setDownloads(res.downloads);
+        setTorrents(res?.torrents ?? []);
+        setDownloads(res?.downloads ?? {});
       },
     );
   });

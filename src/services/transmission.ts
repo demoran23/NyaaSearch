@@ -2,6 +2,7 @@ import { getTransmissionOptions } from 'services/options';
 
 let sessionId: string | undefined;
 
+// ref https://github.com/transmission/transmission/blob/main/docs/rpc-spec.md
 export interface ITransmissionResponse {
   arguments: {
     'torrent-duplicate'?: {
@@ -53,13 +54,13 @@ export const api = async (req: any): Promise<ITransmissionResponse> => {
   });
 };
 
-export const getTorrentByInfoHash = async (infoHash: string) => {
+export const getTorrentsByInfoHash = async (...infoHashes: string[]) => {
   const response = await api({
     arguments: {
-      fields: ['id', 'name', 'torrentFile', 'magnetLink'],
-      ids: [infoHash],
+      fields: ['id', 'name', 'hashString'],
+      ids: infoHashes,
     },
     method: 'torrent-get',
   });
-  return (response.arguments.torrents ?? [])[0];
+  return (response.arguments.torrents ?? []) as Array<{ hashString: string }>;
 };
