@@ -19,7 +19,6 @@ const addSearchButtons = () => {
     mountPoint.className = 'torrent-search-button';
     footer.appendChild(mountPoint);
 
-    console.log('Adding search button to', title);
     render(() => <SearchButtons title={title} />, mountPoint);
   }
 };

@@ -41,7 +41,6 @@ export const api = async (req: any): Promise<ITransmissionResponse> => {
     body: JSON.stringify(req),
   }).then(async (res) => {
     if (res.status === 409) {
-      console.log('Setting transmission session id', res);
       sessionId = res.headers.get('x-transmission-session-id') ?? undefined;
       return api(req);
     }

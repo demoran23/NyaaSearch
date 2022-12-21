@@ -17,18 +17,15 @@ const addOrUpdateSearchButton = () => {
   mountPoint.className = 'torrent-search-button';
   h1.appendChild(mountPoint);
 
-  console.log('Adding search button to', title);
   render(() => <SearchButtons title={title} />, mountPoint);
 };
 
 // Allow the page to load fully before attempting mutate
 setTimeout(addOrUpdateSearchButton, 500);
 
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((msg) => {
   if (msg.type === 'refresh') {
-    console.log('REFRESHING');
     setTimeout(addOrUpdateSearchButton, 200);
-    sendResponse('Refreshing!');
   }
 
   return true;

@@ -7,10 +7,7 @@ export const onGetTransmissionOptions = (
   sendResponse: (response?: any) => void,
 ) => {
   if (msg.type !== 'get-transmission-options') return false;
-  console.log('background.ts', msg.type);
-
   getTransmissionOptions().then((res) => {
-    console.log('res internal', res);
     sendResponse(res);
   });
 
@@ -20,6 +17,5 @@ const getTransmissionOptions = async () => {
   const { transmission } = await chrome.storage.sync.get('transmission');
   transmission.host ??= 'localhost';
   transmission.port ??= '9091';
-  console.log('transmission options', transmission);
   return transmission as ITransmissionOptions;
 };
