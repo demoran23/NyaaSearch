@@ -21,6 +21,7 @@
     "@typescript-eslint/eslint-plugin": "5.46.1",
     "@typescript-eslint/parser": "5.46.1",
     "chrome-types": "0.1.155",
+    "date-fns": "2.29.3",
     "eslint": "8.30.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-solid": "0.9.1",

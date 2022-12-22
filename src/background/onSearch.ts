@@ -27,7 +27,6 @@ export const onSearch = (
         ),
       };
     }, {} as Downloads);
-
     const response: SearchResponse = { torrents, downloads: dl };
 
     sendResponse(response);

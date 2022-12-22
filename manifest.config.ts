@@ -27,6 +27,12 @@ export default defineManifest(async (env) => ({
         '*://anichart.net/Winter-*',
       ],
       js: ['src/content_scripts/anichart.net'],
+      run_at: 'document_end',
+      all_frames: false,
+    },
+    {
+      matches: ['*://myanimelist.net/anime/season*'],
+      js: ['src/content_scripts/myanimelist.net'],
       all_frames: false,
     },
     {

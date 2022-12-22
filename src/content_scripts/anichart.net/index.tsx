@@ -1,7 +1,9 @@
-import { SearchButtons } from 'components/SearchButtons';
+import { RedditButton } from 'components/RedditButton';
+import { SearchButton } from 'components/SearchButton';
 import { render } from 'solid-js/web';
 
 const addSearchButtons = () => {
+  console.log('rendering');
   const cards = [...document.querySelectorAll('.media-card')];
 
   for (const card of cards) {
@@ -19,7 +21,15 @@ const addSearchButtons = () => {
     mountPoint.className = 'torrent-search-button';
     footer.appendChild(mountPoint);
 
-    render(() => <SearchButtons title={title} />, mountPoint);
+    render(
+      () => (
+        <>
+          <SearchButton title={title} />
+          <RedditButton title={title} />
+        </>
+      ),
+      mountPoint,
+    );
   }
 };
 

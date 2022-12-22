@@ -14,7 +14,8 @@ export const setTransmissionOptions = (
 ) => chrome.storage.sync.set({ transmission });
 
 export const getTransmissionOptions = async () => {
-  const { transmission } = await chrome.storage.sync.get('transmission');
+  const res = await chrome.storage.sync.get('transmission');
+  const transmission = res.transmission ?? {};
   transmission.host ??= 'localhost';
   transmission.port ??= '9091';
   return transmission as ITransmissionOptions;

@@ -8,6 +8,8 @@ import {
   Typography,
   IconButton,
 } from '@suid/material';
+import { TorrentIcon } from 'components/TorrentIcon';
+import { formatDistance } from 'date-fns';
 import { Torrent } from 'services/nyaa';
 import { Component, Match, Switch } from 'solid-js';
 import { downloads } from 'store/downloads';
@@ -18,6 +20,8 @@ export interface TorrentCardProps {
 }
 
 export const TorrentCard: Component<TorrentCardProps> = (props) => {
+  const today = new Date();
+  const publishDate = new Date(props.torrent.pubDate);
   return (
     <Card sx={{ minWidth: 275, margin: 2 }}>
       <CardContent>
@@ -33,9 +37,10 @@ export const TorrentCard: Component<TorrentCardProps> = (props) => {
         sx={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-around',
+          justifyContent: 'space-between',
           pl: 1,
           pb: 1,
+          pr: 1,
         }}
       >
         <Chip
@@ -53,8 +58,11 @@ export const TorrentCard: Component<TorrentCardProps> = (props) => {
           label={props.torrent['nyaa:size']}
           size={'small'}
         />
-      </Box>
-      <CardActions>
+        <Chip
+          color={'primary'}
+          label={formatDistance(publishDate, today, { addSuffix: true })}
+          size={'small'}
+        />
         <Switch fallback={<Check />}>
           <Match when={!downloads[props.torrent.link]}>
             <IconButton
@@ -65,9 +73,17 @@ export const TorrentCard: Component<TorrentCardProps> = (props) => {
             >
               <Input />
             </IconButton>
+            {/*<IconButton*/}
+            {/*  edge={'end'}*/}
+            {/*  onClick={async () => {*/}
+            {/*    window.open(props.torrent.link, '_blank');*/}
+            {/*  }}*/}
+            {/*>*/}
+            {/*  {<TorrentIcon />}*/}
+            {/*</IconButton>*/}
           </Match>
         </Switch>
-      </CardActions>
+      </Box>
     </Card>
   );
 };
