@@ -15,7 +15,9 @@ export const onSearch = (
 ) => {
   if (msg.type !== 'search') return false;
 
-  search(msg.data).then(async (torrents) => {
+  search(msg.data)?.then(async (torrents) => {
+    torrents ??= [];
+    console.log('TORRENTS', torrents);
     const existing = await getTorrentsByInfoHash(
       ...torrents.map((t) => t['nyaa:infoHash']),
     );

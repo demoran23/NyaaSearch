@@ -1,5 +1,5 @@
 import { XMLParser } from 'fast-xml-parser';
-
+import { debounce } from 'lodash';
 const parser = new XMLParser();
 
 export interface Torrent {
@@ -31,13 +31,23 @@ export interface ISearchRequest {
   quality: string;
 }
 
-export const search = async (req: ISearchRequest) => {
-  const url = `https://nyaa.si/?page=rss&q=${req.title}+${req.group}+${req.quality}`;
-  const response = await fetch(url);
+export const search = debounce(
+  async (req: ISearchRequest) => {
+    const url = `https://nyaa.si/?page=rss&q=${req.title}+${req.group}+${req.quality}`;
+    const response = await fetch(url);
 
-  if (!response.ok) throw Error(await response.text());
+    if (!response.ok) throw Error(await response.text());
 
-  const xml = await response.text();
-  const json = parser.parse(xml);
-  return (json.rss.channel.item ?? []) as Torrent[];
-};
+    const xml = await response.text();
+    let {
+      rss: {
+        channel: { item },
+      },
+    } = parser.parse(xml);
+    item ??= [];
+    const torrents = Array.isArray(item) ? item : [item];
+    return torrents as Torrent[];
+  },
+  100,
+  { leading: true },
+);

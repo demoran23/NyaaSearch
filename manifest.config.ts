@@ -10,6 +10,7 @@ const [major, minor, patch, label = '0'] = version
   // split into version parts
   .split(/[.-]/);
 
+// ref https://developer.chrome.com/docs/extensions/mv3/manifest/
 export default defineManifest(async (env) => ({
   action: {
     default_popup: 'index.html',
@@ -17,6 +18,10 @@ export default defineManifest(async (env) => ({
   background: {
     service_worker: 'src/background',
     type: 'module',
+  },
+  icons: {
+    '16': 'favicon-16x16.png',
+    '32': 'favicon-32x32.png',
   },
   content_scripts: [
     {
@@ -43,7 +48,7 @@ export default defineManifest(async (env) => ({
   ],
   description: 'Search nyaa.si',
   host_permissions: ['https://*/*', 'http://*/*'],
-  permissions: ['tabs', 'storage'],
+  permissions: ['tabs', 'storage', 'contextMenus'],
   options_page: 'options_page.html',
   manifest_version: 3,
   name: 'Nyaa Search',
