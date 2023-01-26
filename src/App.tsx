@@ -2,7 +2,13 @@ import { Box, TextField } from '@suid/material';
 import { TorrentsList } from 'components/TorrentsList';
 import { extensionId } from 'index';
 import { ITransmissionOptions } from 'services/options';
-import { createEffect, createResource, createSignal } from 'solid-js';
+import {
+  createEffect,
+  createResource,
+  createSignal,
+  onCleanup,
+  onMount,
+} from 'solid-js';
 import type { Component } from 'solid-js';
 
 import styles from './App.module.css';
@@ -22,6 +28,15 @@ const App: Component<AppProps> = (props) => {
       type: 'get-transmission-options',
     });
   });
+  const onSelectedTextChange = (e: MouseEvent) => {
+    const value = window.getSelection()?.toString();
+    if (value) {
+      setTitle(value);
+    }
+  };
+
+  onMount(() => window.addEventListener('mouseup', onSelectedTextChange));
+  onCleanup(() => window.removeEventListener('mouseup', onSelectedTextChange));
 
   // When we get an options default base dir, set our mutable basedir
   createEffect(() => {
